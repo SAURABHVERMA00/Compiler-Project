@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  submissions Submission[]
+  stats       UserStats?
+
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model UserStats {
+  id               Int @id @default(autoincrement())
+  userId           Int @unique
+  problemsSolved   Int @default(0)
+  totalSubmissions Int @default(0)
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Problem {
+  id           Int          @id @default(autoincrement())
+  title        String
+  description  String
+  difficulty   String
+  timeLimit    Int
+  memoryLimit  Int
+  inputFormat  String?
+  outputFormat String?
+  createdAt    DateTime     @default(now())
+  testCases    TestCase[]
+  submissions  Submission[]
+}
+
+model TestCase {
+  id        Int     @id @default(autoincrement())
+  problemId Int
+  input     String
+  output    String
+  order     Int
+  isHidden  Boolean @default(false)
+
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+model Submission {
+  id          Int              @id @default(autoincrement())
+  userId      Int
+  problemId   Int
+  language    Language
+  status      SubmissionStatus @default(PENDING)
+  judgeStatus String? // 👈 Store raw judge description
+
+  runtime   Int?
+  memory    Int?
+  createdAt DateTime @default(now())
+  token     String?
+
+  problem Problem @relation(fields: [problemId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+enum SubmissionStatus {
+  PENDING
+  RUNNING
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT_EXCEEDED
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+}
+
+enum Language {
+  CPP
+  PYTHON
+  JAVA
+}

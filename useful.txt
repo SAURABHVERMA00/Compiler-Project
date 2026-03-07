@@ -1,0 +1,48 @@
+runnung project from scrathc :
+1: install prisma
+npm install prisma @prisma/client
+2: Intialize Prisma :
+npx prisma init
+
+3: run migrate 
+npx prisma migrate dev --name init
+
+
+
+
+to run docker compose and go internal db
+1. docker exec -it postgres psql -U postgres - postgres-container name 
+2.\l
+3.\c compiler_db
+4.\dt
+
+
+docker exec -it compiler-postgres psql -U postgres -d compiler_db
+
+
+
+Workflow: schema.prisma  →  migrate  →  DB tables created
+
+
+
+
+to run the primsa -: 
+npx prisma generate
+# run for migration:-
+npx prisma migrate dev --name init
+
+
+for express 
+docker-compose up --build
+
+
+for running command :api-service/ -
+npx prisma generate
+npx prisma migrate dev --name init
+node src/server.js
+
+
+
+# prisma client is in generted folder 
+
+Judge : port number : curl http://localhost:2358/languages
