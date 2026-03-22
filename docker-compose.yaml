@@ -6,8 +6,8 @@ services:
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
       POSTGRES_DB: compiler_db
     ports:
       - "5432:5432"
@@ -18,8 +18,8 @@ services:
     container_name: pgadmin
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_EMAIL: 
+      PGADMIN_DEFAULT_PASSWORD: 
     ports:
       - "5050:80"
     depends_on:
